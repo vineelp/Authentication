@@ -1,0 +1,61 @@
+﻿
+@using Authentication.Models
+@model UserViewModel
+@{
+    ViewBag.Title = "UserGrid";
+}
+
+<div> &nbsp;</div><div> &nbsp;</div><div> &nbsp;</div>
+<div id="parent">
+    <div class="col-md-2">
+        <div >
+            @Html.LabelFor(m => m.UserName)
+        </div>
+        <div>
+            @Html.TextBoxFor(m => m.UserName, new { @class = "filterItem" })
+            @Html.ValidationMessageFor(m => m.UserName)
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div>
+            @Html.LabelFor(m => m.FirstName)
+        </div>
+        <div>
+            @Html.TextBoxFor(m => m.FirstName, new { @class = "filterItem" })
+            @Html.ValidationMessageFor(m => m.FirstName)
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div>
+            @Html.LabelFor(m => m.LastName)
+        </div>
+        <div>
+            @Html.TextBoxFor(m => m.LastName, new { @class = "filterItem" })
+            @Html.ValidationMessageFor(m => m.LastName)
+        </div>
+    </div>
+    <div> &nbsp;</div>
+    <div class="col-md-1">
+        <div>
+            <input type="button" id="filterButton" class="form-control" name="search" value="Filter" />
+        </div>
+    </div>
+    <div class="col-md-1">
+        <div>
+            <input type="button" id="reset" class="form-control" name="search" value="Reset" />
+        </div>
+    </div>
+</div>
+<div> &nbsp;</div><div> &nbsp;</div><div> &nbsp;</div>
+<div>
+    <table id="grid"></table>
+    <div id="pager"></div>
+</div>
+
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/jquery.jqGrid/ui.jqgrid.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.9.1.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.10.0.min.js"></script>
+<script src="~/Scripts/i18n/grid.locale-en.js"></script>
+<script src="~/Scripts/jquery.jqGrid.min.js"></script>
+<script src="~/Scripts/UserGrid.js"></script>

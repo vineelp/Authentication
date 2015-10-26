@@ -1,0 +1,32 @@
+﻿@model Authentication.Models.LoginViewModel
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+</head>
+<body>
+    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }))
+    {
+        @Html.AntiForgeryToken()
+        
+        <div class="form-horizontal">
+            <h4>Login</h4>
+            <hr />
+            @Html.LabelFor(model => model.UserName)
+            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", placeholder = "User Name" })
+            <br />
+            @Html.LabelFor(model => model.Password)
+            @Html.TextBoxFor(model => model.Password, new { type = "password", @class = "form-control", placeholder = "Password" })
+            <br />
+            <input type="submit" value="Submit" class="btn btn-default" />
+        </div>
+    }
+</body>
+</html>
