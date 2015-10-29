@@ -132,7 +132,10 @@ namespace Authentication.Controllers
             }
             else
             {
-                msg = "Data validation is not successfull";
+                if (ModelState["Password"].Errors.Count > 0)
+                    msg = ModelState["Password"].Errors[0].ErrorMessage;
+                else
+                    msg = "Data validation is not successfull";
             }
             return msg;
         }
