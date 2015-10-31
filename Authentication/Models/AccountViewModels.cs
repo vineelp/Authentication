@@ -15,6 +15,7 @@ namespace Authentication.Models
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
+        [MinLength(3)]
         public string Password { get; set; }
     }
 }

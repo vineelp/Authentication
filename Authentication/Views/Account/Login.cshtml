@@ -24,9 +24,13 @@
             <br />
             @Html.LabelFor(model => model.Password)
             @Html.TextBoxFor(model => model.Password, new { type = "password", @class = "form-control", placeholder = "Password" })
+            @Html.ValidationMessageFor(model => model.Password);
             <br />
             <input type="submit" value="Submit" class="btn btn-default" />
         </div>
     }
+    <script src="~/Scripts/jquery-2.1.4.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 </body>
 </html>
