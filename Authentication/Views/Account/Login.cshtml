@@ -24,7 +24,7 @@
             <br />
             @Html.LabelFor(model => model.Password)
             @Html.TextBoxFor(model => model.Password, new { type = "password", @class = "form-control", placeholder = "Password" })
-            @Html.ValidationMessageFor(model => model.Password);
+            @Html.ValidationMessageFor(model => model.Password)
             <br />
             <input type="submit" value="Submit" class="btn btn-default" />
         </div>
