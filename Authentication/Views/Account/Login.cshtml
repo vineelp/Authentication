@@ -19,6 +19,7 @@
         <div class="form-horizontal">
             <h4>Login</h4>
             <hr />
+            @Html.ValidationSummary(true)
             @Html.LabelFor(model => model.UserName)
             @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", placeholder = "User Name" })
             <br />

@@ -13,11 +13,11 @@ namespace Authentication.Models
         public string LastName { get; set; }
         public string UserName { get; set; }
         public string EmailAddress { get; set; }
-        [RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{4,15}$", 
-            ErrorMessage = "password should contain atleast one small letter, one capital letter and a number")]
+        //[RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{4,15}$", 
+        //    ErrorMessage = "password should contain atleast one small letter, one capital letter and a number")]
         public string Password { get; set; }
         public int RoleID { get; set; }
         public Nullable<int> LocationID { get; set; }
-        public string Active { get; set; }
+        public bool Active { get; set; }
     }
 }

@@ -33,13 +33,28 @@ namespace Authentication.Controllers
 
             if (Membership.ValidateUser(model.UserName, model.Password))
             {
-                FormsAuthentication.SetAuthCookie(model.UserName, false);
-                if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
-                    return Redirect(returnUrl);
+                bool activeUser = false;
+                using (var ctxt = new AuthenticationEntities())
+                {
+                    activeUser = ctxt.Users.Any(user => (user.UserName.Equals(model.UserName) && user.Active.Equals("Y")));
+                }
+                if (activeUser)
+                {
+                    FormsAuthentication.SetAuthCookie(model.UserName, false);
+                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                        return Redirect(returnUrl);
+                    else
+                        return RedirectToAction("Index", "Home");
+                }
                 else
-                    return RedirectToAction("Index", "Home");
+                {
+                    ModelState.AddModelError("", "User is not active");
+                }
             }
-            ModelState.AddModelError("LoginError", "Invalid Username/Password");
+            else
+            {
+                ModelState.AddModelError("", "Invalid Username/Password");
+            }
             return View(model);
         }
 
@@ -79,7 +94,7 @@ namespace Authentication.Controllers
                             Password = u.Password,
                             RoleID = u.RoleID,
                             LocationID = u.LocationID,
-                            Active = u.Active
+                            Active = (u.Active.ToUpper() == "Y") ? true : false
                         });
                 if (locations.Count > 0)
                     userListResults = userListResults.Where(u => locations.Contains(u.LocationID.Value));
@@ -126,6 +141,7 @@ namespace Authentication.Controllers
                     userToEdit.LastName = usr.LastName;
                     userToEdit.EmailAddress = usr.EmailAddress;
                     userToEdit.Password = usr.Password;
+                    userToEdit.Active = (usr.Active ? "Y" : "N");
                     dbContext.SaveChanges();
                     msg = "Saved Successfully";
                 }
