@@ -11,9 +11,9 @@
             { key: false, name: 'UserName', index: 'UserName', editable: false},
             { key: false, name: 'EmailAddress', index: 'EmailAddress', editable: true },
             { key: false, name: 'Password', index: 'Password', editable: true },
-            { key: false, name: 'Active', index: 'Active', editable: true, formatter: "checkbox"
+            { key: false, name: 'Active', index: 'Active', editable: true
                 , formatoptions: { disabled: true }, edittype: "checkbox"
-                , editoptions: { value: "True:False", defaultValue: "True" }
+                , editoptions: { value: "Y:N"}
             }],
         pager: jQuery('#pager'),
         rowNum: 10,
@@ -32,7 +32,7 @@
         },
         autowidth: true,
         multiselect: false
-    }).navGrid('#pager', { edit: true, add: false, del: false, search: false, refresh: false },
+    }).navGrid('#pager', { edit: false, add: false, del: false, search: false, refresh: false },
         {
             // edit options
             zIndex: 100,
@@ -81,7 +81,43 @@
         filterGrid();
     });
     $('.filterItem').addClass('form-control');
+    $("#grid").jqGrid('inlineNav', '#pager',
+    {
+        edit: true,
+        editicon: "ui-icon-pencil",
+        add: false,
+        addicon: "ui-icon-plus",
+        save: true,
+        saveicon: "ui-icon-disk",
+        cancel: true,
+        cancelicon: "ui-icon-cancel",
+
+        editParams: {
+            keys: false,
+            oneditfunc: null,
+            successfunc: function (val) {
+                if (val.responseText != "") {
+                    alert(val.responseText);
+                    $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                }
+            },
+            url: '/Account/EditUser',
+            extraparam: {
+                EmpId: function () {
+                    var sel_id = $('#jQGridDemo').jqGrid('getGridParam', 'selrow');
+                    var value = $('#jQGridDemo').jqGrid('getCell', sel_id, '_id');
+                    return value;
+                }
+            },
+            aftersavefunc: null,
+            errorfunc: null,
+            afterrestorefunc: null,
+            restoreAfterError: true,
+            mtype: "POST"
+        }
+    });
 });
+
 
 function filterGrid() {
     var postDataValues = $("#grid").jqGrid('getGridParam', 'postData');

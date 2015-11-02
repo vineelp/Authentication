@@ -94,7 +94,7 @@ namespace Authentication.Controllers
                             Password = u.Password,
                             RoleID = u.RoleID,
                             LocationID = u.LocationID,
-                            Active = (u.Active.ToUpper() == "Y") ? true : false
+                            Active = u.Active
                         });
                 if (locations.Count > 0)
                     userListResults = userListResults.Where(u => locations.Contains(u.LocationID.Value));
@@ -141,7 +141,7 @@ namespace Authentication.Controllers
                     userToEdit.LastName = usr.LastName;
                     userToEdit.EmailAddress = usr.EmailAddress;
                     userToEdit.Password = usr.Password;
-                    userToEdit.Active = (usr.Active ? "Y" : "N");
+                    userToEdit.Active = usr.Active;
                     dbContext.SaveChanges();
                     msg = "Saved Successfully";
                 }
