@@ -3,12 +3,12 @@
         url: "/Account/GetUsersList",
         datatype: 'json',
         mtype: 'Get',
-        colNames: ['UserId', 'First Name', 'Last Name', 'UserName', 'EmailAddress', 'Password', 'Active'],
+        colNames: ['UserName', 'UserId', 'First Name', 'Last Name', 'EmailAddress', 'Password', 'Active'],
         colModel: [
+            { key: false, name: 'UserName', index: 'UserName', editable: false},
             { key: false, name: 'UserID', key: true, hidden: true, index: 'UserID', editable: true },
             { key: false, name: 'FirstName', index: 'FirstName', editable: true },
             { key: false, name: 'LastName', index: 'LastName', editable: true },
-            { key: false, name: 'UserName', index: 'UserName', editable: false},
             { key: false, name: 'EmailAddress', index: 'EmailAddress', editable: true },
             { key: false, name: 'Password', index: 'Password', editable: true },
             { key: false, name: 'Active', index: 'Active', editable: true
