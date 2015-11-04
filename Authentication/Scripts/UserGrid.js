@@ -13,8 +13,10 @@
                         delbutton: false,
                         editformbutton: true,
                         editOptions: {
-                            //closeAfterEdit: true,
                             url: '/Account/EditUser',
+                            top: Math.max(0, ($(window).height() / 3)),
+                            left: Math.max(0, ($(window).width() / 3)),
+                            closeOnEscape: true,
                             afterComplete: function (response) {
                                 if (response.responseText) {
                                     alert(response.responseText);
