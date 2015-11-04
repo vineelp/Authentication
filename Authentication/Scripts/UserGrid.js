@@ -1,12 +1,14 @@
-﻿$(function () {
+﻿var dbEditWidth = 30;
+var dbWidth = 300;
+$(function () {
     $("#grid").jqGrid({
         url: "/Account/GetUsersList",
         datatype: 'json',
         mtype: 'Get',
-        colNames: ['Action', 'UserName', 'UserId', 'First Name', 'Last Name', 'EmailAddress', 'Password', 'Active'],
+        colNames: ['Actions', 'UserName', 'UserId', 'First Name', 'Last Name', 'EmailAddress', 'Password', 'Active'],
         colModel: [
-                { name: 'documentName', index: 'documentName', width: 35, editable: false,
-                    //add the following in one of the colModel config
+                {
+                    name: 'Actions', index: 'Actions', width: 35, editable: false,
                     formatter: 'actions',
                     formatoptions: {
                         keys: true,
@@ -14,6 +16,7 @@
                         editformbutton: true,
                         editOptions: {
                             url: '/Account/EditUser',
+                            width: dbWidth,
                             top: Math.max(0, ($(window).height() / 3)),
                             left: Math.max(0, ($(window).width() / 3)),
                             closeOnEscape: true,
@@ -28,12 +31,12 @@
                         }
                     }
                 },
-            { key: false, name: 'UserName', index: 'UserName', editable: false},
-            { key: false, name: 'UserID', key: true, hidden: true, index: 'UserID', editable: true },
-            { key: false, name: 'FirstName', index: 'FirstName', editable: true },
-            { key: false, name: 'LastName', index: 'LastName', editable: true },
-            { key: false, name: 'EmailAddress', index: 'EmailAddress', editable: true },
-            { key: false, name: 'Password', index: 'Password', editable: true },
+            { key: false, name: 'UserName', index: 'UserName', editable: false, editoptions: { size: dbEditWidth } },
+            { key: false, name: 'UserID', key: true, hidden: true, index: 'UserID', editable: true, editoptions: { size: dbEditWidth } },
+            { key: false, name: 'FirstName', index: 'FirstName', editable: true, editoptions: { size: dbEditWidth } },
+            { key: false, name: 'LastName', index: 'LastName', editable: true, editoptions: { size: dbEditWidth }},
+            { key: false, name: 'EmailAddress', index: 'EmailAddress', editable: true, editoptions: { size: dbEditWidth } },
+            { key: false, name: 'Password', index: 'Password', editable: true, editoptions: { size: dbEditWidth } },
             { key: false, name: 'Active', index: 'Active', editable: true
                 , formatoptions: { disabled: true }, edittype: "checkbox"
                 , editoptions: { value: "Y:N"}
@@ -43,7 +46,7 @@
         rowList: [2, 5, 10, 15],
         height: '100%',
         viewrecords: true,
-        caption: 'User Administration',
+        caption: '',
         emptyrecords: 'No records to display',
         jsonReader: {
             root: "rows",
