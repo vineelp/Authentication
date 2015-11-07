@@ -1,5 +1,5 @@
 ﻿var dbEditWidth = 30;
-var dbWidth = 300;
+var dbWidth = 400;
 $(function () {
     $("#grid").jqGrid({
         url: "/Account/GetUsersList",
@@ -22,10 +22,15 @@ $(function () {
                             closeOnEscape: true,
                             afterComplete: function (response) {
                                 if (response.responseText) {
-                                    alert(response.responseText);
                                     $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
-                                    if (response.responseText === "Saved Successfully")
+                                    if (response.responseText.indexOf("Success") > -1) {
                                         $('#cData').trigger('click');
+                                        alert(response.responseText);
+                                    }
+                                    else {
+                                        $("#FormError").show();
+                                        $("#FormError>td").html(response.responseText);
+                                    }
                                 }
                             }
                         }
