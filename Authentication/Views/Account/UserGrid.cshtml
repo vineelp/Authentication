@@ -71,3 +71,20 @@
 <script src="~/Scripts/i18n/grid.locale-en.js"></script>
 <script src="~/Scripts/jquery.jqGrid.min.js"></script>
 <script src="~/Scripts/UserGrid.js"></script>
+<script>
+        $(".filterItem").keyup(function (event) {
+            if (event.keyCode == 13) {
+                $("#filterButton").click();
+            }
+        });
+        $(document).ready(function () {
+            // redirect to Login Page on Authentication Timeout
+            $(document).ajaxError(function (e, xhr, settings) {
+                if (xhr.status == 401) {
+                    location = '@Url.Action("Login", "Account", new { statusCode = 401 })';
+                } else if (xhr.status == 403) {
+                    location = '@Url.Action("Login", "Account", new { statusCode = 403 })';
+                }
+            });
+        });
+</script>
