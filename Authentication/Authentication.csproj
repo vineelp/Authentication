@@ -57,6 +57,8 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.ReportViewer.WebForms, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -189,6 +191,16 @@
     <Content Include="Content\themes\jquery-ui-1.11.4.custom\jquery-ui.theme.css" />
     <Content Include="Content\themes\jquery-ui-1.11.4.custom\jquery-ui.theme.min.css" />
     <Content Include="Global.asax" />
+    <Content Include="Infrastructure\Auth.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Auth.edmx</DependentUpon>
+      <LastGenOutput>Auth.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Infrastructure\Auth.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Auth.edmx</DependentUpon>
+      <LastGenOutput>Auth.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\i18n\grid.locale-ar.js" />
     <Content Include="Scripts\i18n\grid.locale-bg.js" />
     <Content Include="Scripts\i18n\grid.locale-bg1251.js" />
@@ -243,6 +255,13 @@
     <Content Include="DataSet1.xss">
       <DependentUpon>DataSet1.xsd</DependentUpon>
     </Content>
+    <EntityDeploy Include="Infrastructure\Auth.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Auth.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Infrastructure\Auth.edmx.diagram">
+      <DependentUpon>Auth.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
@@ -271,6 +290,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Core\Interfaces\IAccountRepository.cs" />
+    <Compile Include="Core\Interfaces\IAccountService.cs" />
+    <Compile Include="Core\Services\AccountService.cs" />
     <Compile Include="DataSet1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -279,8 +301,33 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\AccountRepository.cs" />
+    <Compile Include="Infrastructure\Auth.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Auth.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Infrastructure\Auth.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Auth.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Infrastructure\Auth.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Auth.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Infrastructure\CustomMembershipProvider.cs" />
     <Compile Include="Infrastructure\CustomRoleProvider.cs" />
+    <Compile Include="Infrastructure\MLocation.cs">
+      <DependentUpon>Auth.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Infrastructure\Role.cs">
+      <DependentUpon>Auth.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Infrastructure\User.cs">
+      <DependentUpon>Auth.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -307,15 +354,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Authentication.Domain\Authentication.Domain.csproj">
-      <Project>{75ec6a90-8070-4252-a35d-5420c1bf5e61}</Project>
-      <Name>Authentication.Domain</Name>
-    </ProjectReference>
+    <Folder Include="Core\Models\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Report1.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

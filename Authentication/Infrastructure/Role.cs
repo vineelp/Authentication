@@ -7,20 +7,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Authentication.Domain.Entities
+namespace Authentication.Infrastructure
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class MLocation
+    public partial class Role
     {
-        public int MLocationID { get; set; }
-        public int LocationID { get; set; }
-        public int ManagerID { get; set; }
-        public System.DateTime CreateDate { get; set; }
-        public string CreateBy { get; set; }
-        public Nullable<System.DateTime> UpdateDate { get; set; }
-        public string UpdateBy { get; set; }
+        public int RoleID { get; set; }
+        public string RoleName { get; set; }
         public string Active { get; set; }
     }
 }

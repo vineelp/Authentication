@@ -5,14 +5,27 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using Authentication.Domain.Entities;
 using Authentication.Models;
+using Authentication.Core.Services;
+using Authentication.Core.Interfaces;
+using Authentication.Infrastructure;
 
 namespace Authentication.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private IAccountService mAccountService;
+
+        public AccountController(IAccountService accountService)
+        {
+            mAccountService = accountService;
+        }
+
+        public AccountController() : this(new AccountService(new AccountRepository()))
+        {
+        }
+
         // GET: Account
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
@@ -33,11 +46,7 @@ namespace Authentication.Controllers
 
             if (Membership.ValidateUser(model.UserName, model.Password))
             {
-                bool activeUser = false;
-                using (var ctxt = new AuthenticationEntities())
-                {
-                    activeUser = ctxt.Users.Any(user => (user.UserName.Equals(model.UserName) && user.Active.Equals("Y")));
-                }
+                bool activeUser = mAccountService.IsActiveUser(model.UserName);
                 if (activeUser)
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, false);
@@ -72,61 +81,25 @@ namespace Authentication.Controllers
 
         public JsonResult GetUsersList(string sidx, string sord, int page, int rows, string userName, string firstName, string lastName)  //Gets the Users.
         {
+            int totalPages, totalRecords;
+            string managerName = null;
+            if (Roles.IsUserInRole("MANAGER"))
+                managerName = User.Identity.Name;
+            UserViewModel[] userViewModels = mAccountService.GetUsers(managerName, sidx, sord, page, rows, userName, firstName, lastName, out totalPages, out totalRecords);
+
             int pageIndex = Convert.ToInt32(page) - 1;
             int pageSize = rows;
             List<int> locations = new List<int>();
-            
-            using (var db = new AuthenticationEntities())
+
+            var jsonData = new
             {
-                if (Roles.IsUserInRole("MANAGER"))
-                {
-                    int userID = db.Users.FirstOrDefault(u => u.UserName.Equals(User.Identity.Name)).UserID;
-                    locations = db.MLocations.Where(u => u.ManagerID == userID).Select(u=>u.LocationID).ToList();
-                }
-                var userListResults = db.Users.Select(
-                        u => new UserViewModel
-                        {
-                            UserID = u.UserID,
-                            FirstName = u.FirstName,
-                            LastName = u.LastName,
-                            UserName = u.UserName,
-                            EmailAddress = u.EmailAddress,
-                            Password = u.Password,
-                            RoleID = u.RoleID,
-                            LocationID = u.LocationID,
-                            Active = u.Active
-                        });
-                if (locations.Count > 0)
-                    userListResults = userListResults.Where(u => locations.Contains(u.LocationID.Value));
-                if(!string.IsNullOrEmpty(userName))
-                    userListResults = userListResults.Where(u => u.UserName.Contains(userName));
-                if (!string.IsNullOrEmpty(firstName))
-                    userListResults = userListResults.Where(u => u.FirstName.Contains(firstName));
-                if (!string.IsNullOrEmpty(lastName))
-                    userListResults = userListResults.Where(u => u.LastName.Contains(lastName));
-                int totalRecords = userListResults.Count();
-                var totalPages = (int)Math.Ceiling((float)totalRecords / (float)rows);
-                if (sord.ToUpper() == "DESC")
-                {
-                    userListResults = userListResults.OrderByDescending(s => s.UserName);
-                    userListResults = userListResults.Skip(pageIndex * pageSize).Take(pageSize);
-                }
-                else
-                {
-                    userListResults = userListResults.OrderBy(s => s.UserName);
-                    userListResults = userListResults.Skip(pageIndex * pageSize).Take(pageSize);
-                }
-                
-                var jsonData = new
-                {
-                    total = totalPages,
-                    page,
-                    records = totalRecords,
-                    rows = userListResults.ToArray()
-                };
-                JsonResult result = Json(jsonData, JsonRequestBehavior.AllowGet);
-                return result;
-            }
+                total = totalPages,
+                page,
+                records = totalRecords,
+                rows = userViewModels
+            };
+            JsonResult result = Json(jsonData, JsonRequestBehavior.AllowGet);
+            return result;
         }
 
         public string EditUser(UserViewModel usr)
@@ -134,17 +107,11 @@ namespace Authentication.Controllers
             string msg;
             if (ModelState.IsValid)
             {
-                using (var dbContext = new AuthenticationEntities())
-                {
-                    User userToEdit = dbContext.Users.FirstOrDefault(u => u.UserID == usr.UserID);
-                    userToEdit.FirstName = usr.FirstName;
-                    userToEdit.LastName = usr.LastName;
-                    userToEdit.EmailAddress = usr.EmailAddress;
-                    userToEdit.Password = usr.Password;
-                    userToEdit.Active = usr.Active;
-                    dbContext.SaveChanges();
+                bool success = mAccountService.EditUser(usr);
+                if (success)
                     msg = "Saved Successfully";
-                }
+                else
+                    msg = "Error updating user";
             }
             else
             {
@@ -159,23 +126,12 @@ namespace Authentication.Controllers
         public string DeleteUser(int id)
         {
             string msg;
-            if (ModelState.IsValid)
-            {
-                using (var dbContext = new AuthenticationEntities())
-                {
-                    User userToDelete = dbContext.Users.FirstOrDefault(u => u.UserID == id);
-                    if (userToDelete != null)
-                    {
-                        dbContext.Users.Remove(userToDelete);
-                        dbContext.SaveChanges();
-                    }
-                    msg = "Deleted Successfully";
-                }
-            }
+
+            if (mAccountService.DeleteUser(id))
+                msg = "Deleted Successfully";
             else
-            {
                 msg = "Error deleting user";
-            }
+
             return msg;
         }
     }

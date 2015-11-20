@@ -48,12 +48,12 @@ warning 6002: The table/view 'Authentication.dbo.Role' does not have a primary k
           <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="RoleID" Type="int" Nullable="false" />
           <Property Name="LocationID" Type="int" />
-          <Property Name="EOCEvalID" Type="bigint" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="EOCEvalID" Type="bigint" />
+          <Property Name="CreateDate" Type="datetime" />
           <Property Name="CreateBy" Type="varchar" MaxLength="50" />
           <Property Name="UpdateDate" Type="datetime" />
           <Property Name="UpdateBy" Type="varchar" MaxLength="50" />
-          <Property Name="Active" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="Active" Type="char" MaxLength="1" />
         </EntityType>
         <EntityContainer Name="AuthenticationModelStoreContainer">
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
@@ -94,12 +94,12 @@ warning 6002: The table/view 'Authentication.dbo.Role' does not have a primary k
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="RoleID" Type="Int32" Nullable="false" />
           <Property Name="LocationID" Type="Int32" />
-          <Property Name="EOCEvalID" Type="Int64" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EOCEvalID" Type="Int64" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="CreateBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <Property Name="UpdateBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Active" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Active" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
         <EntityType Name="MLocation">
           <Key>

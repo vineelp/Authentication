@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Authentication.Domain.Entities
+namespace Authentication.Infrastructure
 {
     using System;
     using System.Data.Entity;
