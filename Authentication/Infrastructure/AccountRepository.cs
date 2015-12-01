@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 
 namespace Authentication.Infrastructure
@@ -44,6 +45,24 @@ namespace Authentication.Infrastructure
             using (var dbContext = new AuthenticationEntities())
             {
                 return dbContext.Users.Where(u => u.UserID == userId).FirstOrDefault();
+            }
+        }
+
+        public List<User> GetUsers(string sortOrder, int page, int pageSize, out int totalPages, out int totalRecords, Func<User, bool> filter = null)
+        {
+            int pageIndex = Convert.ToInt32(page) - 1;
+            using (var dbContext = new AuthenticationEntities())
+            {
+                var userListResults = dbContext.Users.Select(u => u).Where(filter);
+                totalRecords = userListResults.Count();
+                totalPages = (int)Math.Ceiling((float)totalRecords / (float)pageSize);
+                if (sortOrder.ToUpper() == "DESC")
+                    userListResults = userListResults.OrderByDescending(s => s.UserName);
+                else
+                    userListResults = userListResults.OrderBy(s => s.UserName);
+                userListResults = userListResults.Skip(pageIndex * pageSize).Take(pageSize);
+                //userListResults.Where(filter);
+                return userListResults.ToList();
             }
         }
 

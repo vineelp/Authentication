@@ -8,7 +8,7 @@ using Authentication.Infrastructure;
 
 namespace Authentication.Core.Services
 {
-    public class AccountService: IAccountService
+    public class AccountService : IAccountService
     {
         private IAccountRepository mAccountRepository;
         public AccountService(IAccountRepository accountRepository)
@@ -35,10 +35,24 @@ namespace Authentication.Core.Services
         public UserViewModel[] GetUsers(string managerName, string sidx, string sord, int page, int rows, string userName, string firstName, string lastName, out int totalPages, out int totalRecords)
         {
             List<int> managerLocations = null;
-            if(string.IsNullOrEmpty(managerName))
+            if (string.IsNullOrEmpty(managerName))
             {
                 managerLocations = mAccountRepository.GetManagerLocations(managerName);
             }
+            Func<User, bool> filter = (e =>
+            {
+                bool filterPassed = true;
+                if (managerLocations != null)
+                    filterPassed = managerLocations.Contains(e.LocationID.Value);
+                if (!string.IsNullOrEmpty(userName))
+                    filterPassed = e.UserName.Contains(userName);
+                if (!string.IsNullOrEmpty(firstName))
+                    filterPassed = e.UserName.Contains(firstName);
+                if (!string.IsNullOrEmpty(lastName))
+                    filterPassed = e.UserName.Contains(lastName);
+                return filterPassed;
+            });
+            //List <User> users = mAccountRepository.GetUsers(sord, page, rows, out totalPages, out totalRecords, filter);
             List<User> users = mAccountRepository.GetUsers(managerLocations, sidx, sord, page, rows, userName, firstName, lastName, out totalPages, out totalRecords);
 
             UserViewModel[] userViewModels = users.Select(
