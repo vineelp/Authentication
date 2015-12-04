@@ -1,7 +1,7 @@
 ﻿using Authentication.Models;
 using System;
 
-namespace Authentication.BLL.Interfaces
+namespace Authentication.Service.Interfaces
 {
     public interface IAccountService: IDisposable
     {

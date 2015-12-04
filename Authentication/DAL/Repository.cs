@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
-using System.Web;
 
 namespace Authentication.DAL
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class Repository<T> : IRepository<T> where T : class
     {
         private AuthenticationEntities context;
         private DbSet<T> table = null;
-        public GenericRepository(AuthenticationEntities context)
+        public Repository(AuthenticationEntities context)
         {
             this.context = context;
             table = context.Set<T>();

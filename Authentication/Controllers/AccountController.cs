@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Web.Security;
 using Authentication.Models;
-using Authentication.BLL.Services;
-using Authentication.BLL.Interfaces;
+using Authentication.Service.Classes;
+using Authentication.Service.Interfaces;
 using Authentication.DAL;
 
 namespace Authentication.Controllers

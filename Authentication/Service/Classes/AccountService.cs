@@ -1,11 +1,11 @@
-﻿using Authentication.BLL.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Authentication.Models;
 using Authentication.DAL;
+using Authentication.Service.Interfaces;
 
-namespace Authentication.BLL.Services
+namespace Authentication.Service.Classes
 {
     public class AccountService : IAccountService
     {
@@ -18,7 +18,7 @@ namespace Authentication.BLL.Services
         public bool DeleteUser(int userID)
         {
             unitOfWork.UserRepository.Delete(userID);
-            unitOfWork.Save();
+            unitOfWork.SaveChanges();
             return true;
         }
 
@@ -36,7 +36,7 @@ namespace Authentication.BLL.Services
             user.Password = userViewModel.Password;
             user.Active = userViewModel.Active;
             unitOfWork.UserRepository.Update(user);
-            unitOfWork.Save();
+            unitOfWork.SaveChanges();
             return true;
         }
 

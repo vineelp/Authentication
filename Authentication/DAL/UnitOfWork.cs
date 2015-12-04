@@ -1,44 +1,54 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Authentication.DAL
 {
-    public class UnitOfWork : IDisposable
+    public class UnitOfWork : IUnitOfWork
     {
         private AuthenticationEntities authContext = new AuthenticationEntities();
-        private IGenericRepository<User> userRepository;
-        private IGenericRepository<MLocation> mlocationRepository;
+        private IRepository<User> userRepository;
+        private IRepository<MLocation> mlocationRepository;
+        private bool disposed = false;
 
-        public IGenericRepository<User> UserRepository
+        public IRepository<User> UserRepository
         {
             get
             {
                 if (userRepository == null)
-                    userRepository = new GenericRepository<User>(authContext);
+                    userRepository = new Repository<User>(authContext);
                 return userRepository;
             }
         }
 
-        public IGenericRepository<MLocation> MLocationRepository
+        public IRepository<MLocation> MLocationRepository
         {
             get
             {
                 if (mlocationRepository == null)
-                    mlocationRepository = new GenericRepository<MLocation>(authContext);
+                    mlocationRepository = new Repository<MLocation>(authContext);
                 return mlocationRepository;
             }
         }
 
-        public void Save()
+        protected virtual void Dispose(bool disposing)
         {
-            authContext.SaveChanges();
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    authContext.Dispose();
+                }
+            }
+            disposed = true;
         }
 
         public void Dispose()
         {
-            authContext.Dispose();
+            Dispose(true);
+        }
+
+        public void SaveChanges()
+        {
+            authContext.SaveChanges();
         }
     }
 }

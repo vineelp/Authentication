@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Authentication.DAL
 {
-    public interface IGenericRepository<T> where T : class
+    public interface IRepository<T> where T : class
     {
         IQueryable<T> Get();
         T Get(object id);
