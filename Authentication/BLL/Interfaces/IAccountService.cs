@@ -1,13 +1,9 @@
-﻿using Authentication.Infrastructure;
-using Authentication.Models;
+﻿using Authentication.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
-namespace Authentication.Core.Interfaces
+namespace Authentication.BLL.Interfaces
 {
-    public interface IAccountService
+    public interface IAccountService: IDisposable
     {
         bool IsActiveUser(string userName);
         bool EditUser(UserViewModel user);

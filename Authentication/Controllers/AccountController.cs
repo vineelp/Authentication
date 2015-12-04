@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using Authentication.Models;
-using Authentication.Core.Services;
-using Authentication.Core.Interfaces;
-using Authentication.Infrastructure;
+using Authentication.BLL.Services;
+using Authentication.BLL.Interfaces;
+using Authentication.DAL;
 
 namespace Authentication.Controllers
 {
@@ -22,8 +19,14 @@ namespace Authentication.Controllers
             mAccountService = accountService;
         }
 
-        public AccountController() : this(new AccountService(new AccountRepository()))
+        public AccountController() : this(new AccountService(new UnitOfWork()))
         {
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            mAccountService.Dispose();
+            base.Dispose(disposing);
         }
 
         // GET: Account

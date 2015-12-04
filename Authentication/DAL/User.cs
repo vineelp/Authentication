@@ -7,17 +7,23 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Authentication.Infrastructure
+namespace Authentication.DAL
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class MLocation
+    public partial class User
     {
-        public int MLocationID { get; set; }
-        public int LocationID { get; set; }
-        public int ManagerID { get; set; }
-        public System.DateTime CreateDate { get; set; }
+        public int UserID { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string UserName { get; set; }
+        public string EmailAddress { get; set; }
+        public string Password { get; set; }
+        public int RoleID { get; set; }
+        public Nullable<int> LocationID { get; set; }
+        public Nullable<long> EOCEvalID { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
         public string CreateBy { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public string UpdateBy { get; set; }

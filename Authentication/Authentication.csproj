@@ -191,12 +191,12 @@
     <Content Include="Content\themes\jquery-ui-1.11.4.custom\jquery-ui.theme.css" />
     <Content Include="Content\themes\jquery-ui-1.11.4.custom\jquery-ui.theme.min.css" />
     <Content Include="Global.asax" />
-    <Content Include="Infrastructure\Auth.Context.tt">
+    <Content Include="DAL\Auth.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Auth.edmx</DependentUpon>
       <LastGenOutput>Auth.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Infrastructure\Auth.tt">
+    <Content Include="DAL\Auth.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Auth.edmx</DependentUpon>
       <LastGenOutput>Auth.cs</LastGenOutput>
@@ -255,11 +255,11 @@
     <Content Include="DataSet1.xss">
       <DependentUpon>DataSet1.xsd</DependentUpon>
     </Content>
-    <EntityDeploy Include="Infrastructure\Auth.edmx">
+    <EntityDeploy Include="DAL\Auth.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Auth.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Infrastructure\Auth.edmx.diagram">
+    <Content Include="DAL\Auth.edmx.diagram">
       <DependentUpon>Auth.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
@@ -290,9 +290,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Core\Interfaces\IAccountRepository.cs" />
-    <Compile Include="Core\Interfaces\IAccountService.cs" />
-    <Compile Include="Core\Services\AccountService.cs" />
+    <Compile Include="BLL\Interfaces\IAccountService.cs" />
+    <Compile Include="BLL\Services\AccountService.cs" />
+    <Compile Include="DAL\IMLocationRepository.cs" />
+    <Compile Include="DAL\IUserRepository.cs" />
+    <Compile Include="DAL\MLocationRepository.cs" />
+    <Compile Include="DAL\UserRepository.cs" />
     <Compile Include="DataSet1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -301,31 +304,31 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Infrastructure\AccountRepository.cs" />
-    <Compile Include="Infrastructure\Auth.Context.cs">
+    <Compile Include="DAL\Auth.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Auth.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Infrastructure\Auth.cs">
+    <Compile Include="DAL\Auth.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Auth.tt</DependentUpon>
     </Compile>
-    <Compile Include="Infrastructure\Auth.Designer.cs">
+    <Compile Include="DAL\Auth.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Auth.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Infrastructure\CustomMembershipProvider.cs" />
-    <Compile Include="Infrastructure\CustomRoleProvider.cs" />
-    <Compile Include="Infrastructure\MLocation.cs">
+    <Compile Include="DAL\CustomMembershipProvider.cs" />
+    <Compile Include="DAL\CustomRoleProvider.cs" />
+    <Compile Include="DAL\MLocation.cs">
       <DependentUpon>Auth.tt</DependentUpon>
     </Compile>
-    <Compile Include="Infrastructure\Role.cs">
+    <Compile Include="DAL\Role.cs">
       <DependentUpon>Auth.tt</DependentUpon>
     </Compile>
-    <Compile Include="Infrastructure\User.cs">
+    <Compile Include="DAL\UnitOfWork.cs" />
+    <Compile Include="DAL\User.cs">
       <DependentUpon>Auth.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
@@ -354,7 +357,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Core\Models\" />
+    <Folder Include="BLL\Models\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Report1.rdlc" />

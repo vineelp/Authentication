@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Security;
 
-namespace Authentication.Infrastructure
+namespace Authentication.DAL
 {
     public class CustomMembershipProvider : MembershipProvider
     {
