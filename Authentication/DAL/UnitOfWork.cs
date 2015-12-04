@@ -8,25 +8,25 @@ namespace Authentication.DAL
     public class UnitOfWork : IDisposable
     {
         private AuthenticationEntities authContext = new AuthenticationEntities();
-        private IUserRepository userRepository;
-        private IMLocationRepository mlocationRepository;
+        private IGenericRepository<User> userRepository;
+        private IGenericRepository<MLocation> mlocationRepository;
 
-        public IUserRepository UserRepository
+        public IGenericRepository<User> UserRepository
         {
             get
             {
                 if (userRepository == null)
-                    userRepository = new UserRepository(authContext);
+                    userRepository = new GenericRepository<User>(authContext);
                 return userRepository;
             }
         }
 
-        public IMLocationRepository MLocationRepository
+        public IGenericRepository<MLocation> MLocationRepository
         {
             get
             {
                 if (mlocationRepository == null)
-                    mlocationRepository = new MLocationRepository(authContext);
+                    mlocationRepository = new GenericRepository<MLocation>(authContext);
                 return mlocationRepository;
             }
         }
