@@ -19,10 +19,6 @@ namespace Authentication.Controllers
             mAccountService = accountService;
         }
 
-        public AccountController() : this(new AccountService(new UnitOfWork()))
-        {
-        }
-
         protected override void Dispose(bool disposing)
         {
             mAccountService.Dispose();

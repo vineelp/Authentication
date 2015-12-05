@@ -9,8 +9,8 @@ namespace Authentication.Service.Classes
 {
     public class AccountService : IAccountService
     {
-        private UnitOfWork unitOfWork;
-        public AccountService(UnitOfWork unitOfWork)
+        private IUnitOfWork unitOfWork;
+        public AccountService(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
         }
