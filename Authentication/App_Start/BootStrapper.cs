@@ -1,13 +1,10 @@
 ﻿using Authentication.DAL;
+using Authentication.Mappings;
 using Authentication.Service.Classes;
 using Authentication.Service.Interfaces;
 using Autofac;
 using Autofac.Integration.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Authentication.App_Start
@@ -17,6 +14,7 @@ namespace Authentication.App_Start
         public static void Run()
         {
             SetAutofacContainer();
+            AutoMapperConfiguration.Configure();
         }
 
         private static void SetAutofacContainer()

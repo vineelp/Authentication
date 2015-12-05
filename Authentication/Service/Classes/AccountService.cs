@@ -4,6 +4,7 @@ using System.Linq;
 using Authentication.Models;
 using Authentication.DAL;
 using Authentication.Service.Interfaces;
+using AutoMapper;
 
 namespace Authentication.Service.Classes
 {
@@ -68,21 +69,9 @@ namespace Authentication.Service.Classes
 
             List<User> filteredUsers = userList.ToList();
 
-            UserViewModel[] userViewModels = filteredUsers.Select(
-                        u => new UserViewModel
-                        {
-                            UserID = u.UserID,
-                            FirstName = u.FirstName,
-                            LastName = u.LastName,
-                            UserName = u.UserName,
-                            EmailAddress = u.EmailAddress,
-                            Password = u.Password,
-                            RoleID = u.RoleID,
-                            LocationID = u.LocationID,
-                            Active = u.Active
-                        }).ToArray();
+            List<UserViewModel> filteredUserViewModels = Mapper.Map<List<User>, List<UserViewModel>>(filteredUsers);
 
-            return userViewModels;
+            return filteredUserViewModels.ToArray();
         }
 
         public bool IsActiveUser(string userName)

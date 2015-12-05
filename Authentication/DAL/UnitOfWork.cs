@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace Authentication.DAL
 {
     public class UnitOfWork : IUnitOfWork

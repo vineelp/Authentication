@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Web.Security;
 using Authentication.Models;
-using Authentication.Service.Classes;
 using Authentication.Service.Interfaces;
-using Authentication.DAL;
 
 namespace Authentication.Controllers
 {
