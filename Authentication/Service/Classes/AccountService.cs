@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic;
 using Authentication.Models;
 using Authentication.DAL;
 using Authentication.Service.Interfaces;
@@ -61,10 +62,16 @@ namespace Authentication.Service.Classes
                 userList = userList.Where(u => u.LastName.Contains(lastName));
             totalRecords = userList.Count();
             totalPages = (int)Math.Ceiling((float)totalRecords / (float)pageSize);
-            if (sortOrder.ToUpper() == "DESC")
-                userList = userList.OrderByDescending(s => s.UserName);
+
+            if (!string.IsNullOrEmpty(sidx))
+            {
+                if (sortOrder.ToUpper() == "DESC")
+                    userList = userList.OrderBy(sidx+ " descending");
+                else
+                    userList = userList.OrderBy(sidx);
+            }
             else
-                userList = userList.OrderBy(s => s.UserName);
+                userList = userList.OrderBy("UserName");
             userList = userList.Skip(pageIndex * pageSize).Take(pageSize);
 
             List<User> filteredUsers = userList.ToList();
