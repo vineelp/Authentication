@@ -4,6 +4,8 @@ using System.Web.Mvc;
 using System.Web.Security;
 using Authentication.Models;
 using Authentication.Service.Interfaces;
+using Authentication.DAL;
+using AutoMapper;
 
 namespace Authentication.Controllers
 {
@@ -82,8 +84,8 @@ namespace Authentication.Controllers
             string managerName = null;
             if (Roles.IsUserInRole("MANAGER"))
                 managerName = User.Identity.Name;
-            UserViewModel[] userViewModels = mAccountService.GetUsers(managerName, sidx, sord, page, rows, userName, firstName, lastName, out totalPages, out totalRecords);
-
+            List<User> filteredUsers = mAccountService.GetUsers(managerName, sidx, sord, page, rows, userName, firstName, lastName, out totalPages, out totalRecords);
+            List<UserViewModel> filteredUserViewModels = Mapper.Map<List<User>, List<UserViewModel>>(filteredUsers);
             int pageIndex = Convert.ToInt32(page) - 1;
             int pageSize = rows;
             List<int> locations = new List<int>();
@@ -93,18 +95,24 @@ namespace Authentication.Controllers
                 total = totalPages,
                 page,
                 records = totalRecords,
-                rows = userViewModels
+                rows = filteredUserViewModels
             };
             JsonResult result = Json(jsonData, JsonRequestBehavior.AllowGet);
             return result;
         }
 
-        public string EditUser(UserViewModel usr)
+        public string EditUser(UserViewModel userViewModel)
         {
             string msg;
             if (ModelState.IsValid)
             {
-                bool success = mAccountService.EditUser(usr);
+                User user = mAccountService.GetUser(userViewModel.UserID);
+                user.FirstName = userViewModel.FirstName;
+                user.LastName = userViewModel.LastName;
+                user.EmailAddress = userViewModel.EmailAddress;
+                user.Password = userViewModel.Password;
+                user.Active = userViewModel.Active;
+                bool success = mAccountService.EditUser(user);
                 if (success)
                     msg = "Saved Successfully";
                 else

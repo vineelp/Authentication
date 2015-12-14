@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
-using Authentication.Models;
 using Authentication.DAL;
 using Authentication.Service.Interfaces;
-using AutoMapper;
 using System.Linq.Expressions;
 
 namespace Authentication.Service.Classes
@@ -30,20 +28,19 @@ namespace Authentication.Service.Classes
             unitOfWork.Dispose();
         }
 
-        public bool EditUser(UserViewModel userViewModel)
+        public bool EditUser(User user)
         {
-            User user = unitOfWork.UserRepository.Get(userViewModel.UserID);
-            user.FirstName = userViewModel.FirstName;
-            user.LastName = userViewModel.LastName;
-            user.EmailAddress = userViewModel.EmailAddress;
-            user.Password = userViewModel.Password;
-            user.Active = userViewModel.Active;
             unitOfWork.UserRepository.Update(user);
             unitOfWork.SaveChanges();
             return true;
         }
 
-        public UserViewModel[] GetUsers(string managerName, string sortIndex, string sortOrder, int page, int pageSize, string userName, string firstName, string lastName, out int totalPages, out int totalRecords)
+        public User GetUser(int userId)
+        {
+            return unitOfWork.UserRepository.Get(userId);
+        }
+
+        public List<User> GetUsers(string managerName, string sortIndex, string sortOrder, int page, int pageSize, string userName, string firstName, string lastName, out int totalPages, out int totalRecords)
         {
             List<int> managerLocations = null;
             if (!string.IsNullOrEmpty(managerName))
@@ -79,11 +76,7 @@ namespace Authentication.Service.Classes
                 userList = userList.OrderBy(u => u.UserName);
             userList = userList.Skip(pageIndex * pageSize).Take(pageSize);
 
-            List<User> filteredUsers = userList.ToList();
-
-            List<UserViewModel> filteredUserViewModels = Mapper.Map<List<User>, List<UserViewModel>>(filteredUsers);
-
-            return filteredUserViewModels.ToArray();
+            return userList.ToList();
         }
 
         public bool IsActiveUser(string userName)
