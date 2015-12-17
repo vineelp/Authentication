@@ -53,9 +53,9 @@ namespace Authentication.Service.Classes
                 managerLocations = unitOfWork.MLocationRepository.Get().Select(u => u.LocationID).ToList();
             }
             Expression<Func<User, bool>> filter = (u => (
-                                                            (userName == null ? true : u.UserName.Contains(userName)) &&
-                                                            (firstName == null ? true : u.FirstName.Contains(firstName)) &&
-                                                            (lastName == null ? true : u.LastName.Contains(lastName)) &&
+                                                            (userName == null || u.UserName.Contains(userName)) &&
+                                                            (firstName == null || u.FirstName.Contains(firstName)) &&
+                                                            (lastName == null || u.LastName.Contains(lastName)) &&
                                                             managerLocations.Contains(u.LocationID.Value)
                                                             ));
             IQueryable<User> userList = unitOfWork.UserRepository.Get();
