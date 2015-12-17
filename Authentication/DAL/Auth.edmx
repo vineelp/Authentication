@@ -6,7 +6,7 @@
     <edmx:StorageModels>
       <Schema Namespace="AuthenticationModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
-warning 6002: The table/view 'Authentication.dbo.MLocation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Auth.dbo.MLocation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="MLocation">
           <Key>
             <PropertyRef Name="MLocationID" />
@@ -25,7 +25,7 @@ warning 6002: The table/view 'Authentication.dbo.MLocation' does not have a prim
           <Property Name="Active" Type="char" MaxLength="1" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'Authentication.dbo.Role' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Auth.dbo.Role' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Role">
           <Key>
             <PropertyRef Name="RoleID" />
