@@ -48,20 +48,19 @@ namespace Authentication.Service.Classes
                 int managerID = unitOfWork.UserRepository.Get().FirstOrDefault(u => u.UserName.Equals(managerName)).UserID;
                 managerLocations = unitOfWork.MLocationRepository.Get().Where(u => u.ManagerID == managerID).Select(u => u.LocationID).ToList();
             }
-            Expression<Func<User, bool>> usersFilter = (u => u.UserName.Contains(userName) && u.FirstName.Contains(firstName) && u.LastName.Contains(lastName));
-            Expression<Func<User, bool>> managersFilter = null;
-            if(managerLocations != null)
-                managersFilter = (u => managerLocations.Contains(u.LocationID.Value));
-            userName = userName ?? string.Empty;
-            firstName = firstName ?? string.Empty;
-            lastName = lastName ?? string.Empty;
-
+            else
+            {
+                managerLocations = unitOfWork.MLocationRepository.Get().Select(u => u.LocationID).ToList();
+            }
+            Expression<Func<User, bool>> filter = (u => (
+                                                            (userName == null ? true : u.UserName.Contains(userName)) &&
+                                                            (firstName == null ? true : u.FirstName.Contains(firstName)) &&
+                                                            (lastName == null ? true : u.LastName.Contains(lastName)) &&
+                                                            managerLocations.Contains(u.LocationID.Value)
+                                                            ));
             IQueryable<User> userList = unitOfWork.UserRepository.Get();
             int pageIndex = Convert.ToInt32(page) - 1;
-            userList = userList.Where(usersFilter);
-            if(managersFilter != null)
-                userList = userList.Where(managersFilter);
-
+            userList = userList.Where(filter);
             totalRecords = userList.Count();
             totalPages = (int)Math.Ceiling((float)totalRecords / (float)pageSize);
 
