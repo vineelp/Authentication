@@ -1,31 +1,32 @@
 ﻿
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Authentication.DAL
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private AuthenticationEntities authContext = new AuthenticationEntities();
-        private IRepository<User> userRepository;
-        private IRepository<MLocation> mlocationRepository;
-        private bool disposed = false;
+        private AuthenticationEntities authContext;
+        private Dictionary<Type, object> repositories;
+        private bool disposed;
 
-        public IRepository<User> UserRepository
+        public UnitOfWork()
         {
-            get
-            {
-                if (userRepository == null)
-                    userRepository = new Repository<User>(authContext);
-                return userRepository;
-            }
+            authContext = new AuthenticationEntities();
+            repositories = new Dictionary<Type, object>();
+            disposed = false;
         }
 
-        public IRepository<MLocation> MLocationRepository
+        public IRepository<TEntity> GetRepository<TEntity>() where TEntity : class
         {
-            get
+            if(repositories.Keys.Contains(typeof(TEntity)))
             {
-                if (mlocationRepository == null)
-                    mlocationRepository = new Repository<MLocation>(authContext);
-                return mlocationRepository;
+                return repositories[typeof(TEntity)] as IRepository<TEntity>;
             }
+            var repository = new Repository<TEntity>(authContext);
+            repositories.Add(typeof(TEntity), repository);
+            return repository;
         }
 
         protected virtual void Dispose(bool disposing)

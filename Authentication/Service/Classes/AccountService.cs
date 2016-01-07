@@ -11,14 +11,18 @@ namespace Authentication.Service.Classes
     public class AccountService : IAccountService
     {
         private IUnitOfWork unitOfWork;
+        private IRepository<User> userRepository;
+        private IRepository<MLocation> mLocationRepository;
         public AccountService(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
+            userRepository = unitOfWork.GetRepository<User>();
+            mLocationRepository = unitOfWork.GetRepository<MLocation>();
         }
 
         public bool DeleteUser(int userID)
         {
-            unitOfWork.UserRepository.Delete(userID);
+            userRepository.Delete(userID);
             unitOfWork.SaveChanges();
             return true;
         }
@@ -30,14 +34,14 @@ namespace Authentication.Service.Classes
 
         public bool EditUser(User user)
         {
-            unitOfWork.UserRepository.Update(user);
+            userRepository.Update(user);
             unitOfWork.SaveChanges();
             return true;
         }
 
         public User GetUser(int userId)
         {
-            return unitOfWork.UserRepository.Get(userId);
+            return userRepository.Get(userId);
         }
 
         public List<User> GetUsers(string managerName, string sortIndex, string sortOrder, int page, int pageSize, string userName, string firstName, string lastName, out int totalPages, out int totalRecords)
@@ -45,12 +49,12 @@ namespace Authentication.Service.Classes
             List<int> managerLocations = null;
             if (!string.IsNullOrEmpty(managerName))
             {
-                int managerID = unitOfWork.UserRepository.Get().FirstOrDefault(u => u.UserName.Equals(managerName)).UserID;
-                managerLocations = unitOfWork.MLocationRepository.Get().Where(u => u.ManagerID == managerID).Select(u => u.LocationID).ToList();
+                int managerID = userRepository.Get().FirstOrDefault(u => u.UserName.Equals(managerName)).UserID;
+                managerLocations = mLocationRepository.Get().Where(u => u.ManagerID == managerID).Select(u => u.LocationID).ToList();
             }
             else
             {
-                managerLocations = unitOfWork.MLocationRepository.Get().Select(u => u.LocationID).ToList();
+                managerLocations = mLocationRepository.Get().Select(u => u.LocationID).ToList();
             }
             Expression<Func<User, bool>> filter = (u => (
                                                             (userName == null || u.UserName.Contains(userName)) &&
@@ -58,7 +62,7 @@ namespace Authentication.Service.Classes
                                                             (lastName == null || u.LastName.Contains(lastName)) &&
                                                             managerLocations.Contains(u.LocationID.Value)
                                                             ));
-            IQueryable<User> userList = unitOfWork.UserRepository.Get();
+            IQueryable<User> userList = userRepository.Get();
             int pageIndex = Convert.ToInt32(page) - 1;
             userList = userList.Where(filter);
             totalRecords = userList.Count();
@@ -81,7 +85,7 @@ namespace Authentication.Service.Classes
         public bool IsActiveUser(string userName)
         {
             bool activeUser = false;
-            activeUser = activeUser = unitOfWork.UserRepository.Get().Any(user => (user.UserName.Equals(userName) && user.Active.Equals("Y")));
+            activeUser = activeUser = userRepository.Get().Any(user => (user.UserName.Equals(userName) && user.Active.Equals("Y")));
             return activeUser;
         }
     }
